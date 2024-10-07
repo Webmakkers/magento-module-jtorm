@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!--
+/*! (c) jTorm and other contributors | www.jtorm.com/license */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="view_block_abstract_to_html_after">
+        <observer name="jtorm_ui_engine" instance="Webmakkers\Jtorm\Observer\ViewBlockAbstractToHtmlAfter\Compile" />
+    </event>
+</config>

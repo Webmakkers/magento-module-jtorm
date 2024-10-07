@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!--
+/*! (c) jTorm and other contributors | www.jtorm.com/license */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Controller\ResultInterface">
+        <plugin name="jtorm_before_fpc" type="Webmakkers\Jtorm\Plugin\Magento\Framework\Controller\ResultInterface\ProcessPhtmlBeforeFpc" sortOrder="-1" />
+        <plugin name="jtorm_after_fpc" type="Webmakkers\Jtorm\Plugin\Magento\Framework\Controller\ResultInterface\ProcessPhtmlAfterFpc" sortOrder="100" />
+    </type>
+</config>

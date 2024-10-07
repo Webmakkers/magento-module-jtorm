@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!--
+/*! (c) jTorm and other contributors | www.jtorm.com/license */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Cache/etc/cache.xsd">
+    <type name="jtorm_ui_engine" translate="label,description" instance="Webmakkers\Jtorm\Model\Cache\Type\JtormUiEngineCache">
+        <label>jTorm UI Engine Cache</label>
+        <description>Cache results generated from jTorm UI Engine</description>
+    </type>
+</config>

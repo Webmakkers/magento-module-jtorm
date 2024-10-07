@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/*! (c) jTorm and other contributors | www.jtorm.com/license */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Webmakkers_Jtorm">
+        <sequence>
+            <module name="Magento_Deploy"/>
+            <module name="Magento_Theme"/>
+            <module name="Magento_Framework"/>
+        </sequence>
+    </module>
+</config>

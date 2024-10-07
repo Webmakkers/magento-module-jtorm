@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/*! (c) jTorm and other contributors | www.jtorm.com/license */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Webmakkers\Jtorm\Api\ConfigInterface" type="Webmakkers\Jtorm\Model\Config"/>
+    <preference for="Webmakkers\Jtorm\Api\ConfigPoolInterface" type="Webmakkers\Jtorm\Model\ConfigPool"/>
+    <preference for="Webmakkers\Jtorm\Api\SendToUIEngineActionInterface" type="Webmakkers\Jtorm\Model\Services\Actions\SendToUIEngineAction"/>
+
+    <!-- Mode dev -->
+    <type name="Magento\Framework\App\View\Asset\MaterializationStrategy\Symlink">
+        <plugin name="jtorm" type="Webmakkers\Jtorm\Plugin\Magento\Framework\App\View\Asset\MaterializationStrategy\Symlink\ProcessHtml" sortOrder="-1"/>
+    </type>
+
+    <!-- Mode deploy/production -->
+    <type name="Magento\Framework\App\View\Asset\MaterializationStrategy\Copy">
+        <plugin name="jtorm" type="Webmakkers\Jtorm\Plugin\Magento\Framework\App\View\Asset\MaterializationStrategy\Copy\ProcessHtml" sortOrder="-1"/>
+    </type>
+</config>

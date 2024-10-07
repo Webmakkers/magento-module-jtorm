@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/*! (c) jTorm and other contributors | www.jtorm.com/license */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <jtorm>
+            <general>
+                <url>http://127.0.0.1:8676</url>
+            </general>
+        </jtorm>
+    </default>
+</config>
