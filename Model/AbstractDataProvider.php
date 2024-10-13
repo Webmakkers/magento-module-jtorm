@@ -12,11 +12,12 @@ abstract class AbstractDataProvider extends DataObject implements DataProviderIn
 {
     protected const string KEY_TRANSPORT = 'transport';
 
+    protected bool $isFullPage = false;
     protected ?int $ttl = null;
 
     public function isFullPage(): bool
     {
-        return false;
+        return $this->isFullPage;
     }
 
     abstract public function getTss(): string;
@@ -34,12 +35,6 @@ abstract class AbstractDataProvider extends DataObject implements DataProviderIn
     public function getTtl(): ?int
     {
         return $this->ttl;
-    }
-
-    public function setTtl(int $ttl): DataProviderInterface
-    {
-        $this->ttl = $ttl;
-        return $this;
     }
 
     public function toArray(array $keys = [])
