@@ -42,6 +42,6 @@ readonly class SendToUIEngineAction implements SendToUIEngineActionInterface
 
     private function getUIEngineUrl()
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_UI_ENGINE_URL);
+        return $this->scopeConfig->getValue(self::XML_PATH_UI_ENGINE_URL, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 }
