@@ -26,6 +26,7 @@ class ConfigPool implements ConfigPoolInterface
         private readonly LoggerInterface               $logger,
         private readonly SendToUIEngineActionInterface $sendUIEngineAction,
         private readonly ScopeConfigInterface          $scopeConfig,
+        private $key = '',
         array                                          $config = []
     ) {
         $this->config = $config;
@@ -73,7 +74,7 @@ class ConfigPool implements ConfigPoolInterface
 
                 $setCache = true;
             } catch (Exception $e) {
-                $this->logger->critical($e->getMessage());
+                $this->logger->critical($e->getMessage() ?? 'Error connecting with jTorm UI Engine');
             }
         }
 
@@ -107,8 +108,9 @@ class ConfigPool implements ConfigPoolInterface
     {
         return
             JtormUiEngineCache::TYPE_IDENTIFIER
-            . '_' . preg_replace('#[_\/]#', '_', strtolower($scope))
-            . '_' . preg_replace('#[_\/]#', '_', strtolower($id))
+            . '_' . \preg_replace('#[_\/]#', '_', \strtolower($scope))
+            . '_' . \preg_replace('#[_\/]#', '_', \strtolower($id))
+            . ($this->key ? '_' . \preg_replace('#[_\/]#', '_', \strtolower($this->key)) : '')
         ;
     }
 }
