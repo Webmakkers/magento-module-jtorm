@@ -23,6 +23,7 @@ readonly class SendToUIEngineAction implements SendToUIEngineActionInterface
 
     public function execute(DataProviderInterface $dataProvider): string
     {
+        $this->curl->setTimeout(5);
         $this->curl->addHeader('Accept', 'text/html');
         $this->curl->addHeader("Content-Type", "application/json");
         $this->curl->addHeader(\CURLOPT_ENCODING, 'gzip, deflate');
