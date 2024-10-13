@@ -11,12 +11,12 @@ use Magento\Framework\Filesystem\Directory\WriteFactory;
 use Magento\Framework\Filesystem\Directory\WriteInterface;
 use Webmakkers\Jtorm\Api\ConfigPoolInterface;
 
-class ProcessHtml
+readonly class ProcessHtml
 {
     public function __construct(
-        private readonly ConfigPoolInterface $configPool,
-        private readonly DataObjectFactory $dataObjectFactory,
-        private readonly WriteFactory $writeFactory
+        private ConfigPoolInterface $configPool,
+        private DataObjectFactory $dataObjectFactory,
+        private WriteFactory $writeFactory
     ) {}
 
     public function aroundPublishFile(

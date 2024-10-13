@@ -12,7 +12,7 @@ use Magento\Framework\DataObjectFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Webmakkers\Jtorm\Api\ConfigPoolInterface;
 
-class ProcessPhtmlAfterFpc
+readonly class ProcessPhtmlAfterFpc
 {
     public function __construct(
         private ConfigPoolInterface $configPool,
