@@ -18,7 +18,11 @@ class FileDataProvider extends \Webmakkers\Jtorm\Model\AbstractDataProvider
         parent::__construct($data);
 
         if (isset($data['ttl'])) {
-            $this->setTtl($data['ttl']);
+            $this->ttl = (int) $data['ttl'];
+        }
+
+        if (isset($data['is_full_page'])) {
+            $this->isFullPage = (bool) $data['is_full_page'];
         }
     }
 
