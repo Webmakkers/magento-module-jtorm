@@ -5,25 +5,20 @@ declare(strict_types=1);
 
 namespace Webmakkers\Jtorm\Model\Services\Actions;
 
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\HTTP\Client\Curl;
-use Magento\Framework\Serialize\Serializer\Json;
-use Webmakkers\Jtorm\Api\DataProviderInterface;
-use Webmakkers\Jtorm\Api\SendToUIEngineActionInterface;
-
-readonly class SendToUIEngineAction implements SendToUIEngineActionInterface
+readonly class SendToUIEngineAction implements \Webmakkers\Jtorm\Api\SendToUIEngineActionInterface
 {
+    private const string XML_PATH_IS_DEBUG = 'jtorm/general/is_debug';
     private const string XML_PATH_UI_ENGINE_URL = 'jtorm/general/url';
 
     public function __construct(
-        private Curl $curl,
-        private Json $json,
-        private ScopeConfigInterface $scopeConfig
+        private \Magento\Framework\HTTP\Client\Curl $curl,
+        private \Magento\Framework\Serialize\Serializer\Json $json,
+        private \Psr\Log\LoggerInterface $logger,
+        private \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {}
 
-    public function execute(DataProviderInterface $dataProvider): string
+    public function execute(\Webmakkers\Jtorm\Api\DataProviderInterface $dataProvider): string
     {
-        $this->curl->setTimeout(5);
         $this->curl->addHeader('Accept', 'text/html');
         $this->curl->addHeader("Content-Type", "application/json");
         $this->curl->addHeader(\CURLOPT_ENCODING, 'gzip, deflate');
@@ -38,7 +33,24 @@ readonly class SendToUIEngineAction implements SendToUIEngineActionInterface
 
         $this->curl->post($this->getUIEngineUrl() . '/api/compile', $data);
 
+        if ($this->isDebug()) {
+            $this->logger->debug(
+                \__METHOD__,
+                [
+                    'return_body' => !$dataProvider->isFullPage(),
+                    'data'        => $dataProvider->toArray(),
+                    'tss'         => $dataProvider->getTss(),
+                    'res'         => $this->curl->getBody()
+                ]
+            );
+        }
+
         return $this->curl->getBody();
+    }
+
+    private function isDebug(): bool
+    {
+        return (bool) $this->scopeConfig->getValue(self::XML_PATH_IS_DEBUG, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
     private function getUIEngineUrl()

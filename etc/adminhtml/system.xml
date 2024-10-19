@@ -18,6 +18,10 @@
                     <label>jTorm UI Engine URL</label>
                     <comment>URL to the jTorm UI engine including port if needed</comment>
                 </field>
+                <field id="is_debug" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
         </section>
     </system>
