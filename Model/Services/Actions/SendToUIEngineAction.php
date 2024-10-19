@@ -35,7 +35,7 @@ readonly class SendToUIEngineAction implements \Webmakkers\Jtorm\Api\SendToUIEng
 
         if ($this->isDebug()) {
             $this->logger->debug(
-                \__METHOD__,
+                __METHOD__,
                 [
                     'return_body' => !$dataProvider->isFullPage(),
                     'data'        => $dataProvider->toArray(),
