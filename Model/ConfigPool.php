@@ -70,11 +70,12 @@ class ConfigPool implements ConfigPoolInterface
                     ->setTransport($transport)
                 ;
 
-                $transport->setHtml($this->sendUIEngineAction->execute($dataProvider));
+                $html = $this->sendUIEngineAction->execute($dataProvider);
+                $transport->setHtml($html);
 
                 $setCache = true;
             } catch (Exception $e) {
-                $this->logger->critical($e->getMessage() ?? 'Error connecting with jTorm UI Engine');
+                $this->logger->critical($e->getMessage() ?? 'Error connecting with jTorm UI Engine.');
             }
         }
 
