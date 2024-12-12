@@ -35,6 +35,6 @@ readonly class Compile implements ObserverInterface
             return;
         }
 
-        $this->configPool->process($this->storeManager->getStore()->getId(), $block->getNameInLayout(), $transport);
+        $this->configPool->process($this->storeManager->getStore()->getId(), $block->getNameInLayout(), $transport, $block);
     }
 }

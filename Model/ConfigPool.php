@@ -45,7 +45,7 @@ class ConfigPool implements ConfigPoolInterface
         return $this->config;
     }
 
-    public function process($scope, string $id, DataObject $transport): DataObject
+    public function process($scope, string $id, DataObject $transport, ?DataObject $block = null): DataObject
     {
         $html = $this->loadCache($scope, $id);
         if ($html) {
@@ -69,6 +69,10 @@ class ConfigPool implements ConfigPoolInterface
                     ->getDataProvider($id)
                     ->setTransport($transport)
                 ;
+
+                if ($block) {
+                    $dataProvider->setBlock($block);
+                }
 
                 $html = $this->sendUIEngineAction->execute($dataProvider);
                 $transport->setHtml($html);

@@ -10,31 +10,42 @@ use Webmakkers\Jtorm\Api\DataProviderInterface;
 
 abstract class AbstractDataProvider extends DataObject implements DataProviderInterface
 {
+    protected const string KEY_BLOCK = 'block';
     protected const string KEY_TRANSPORT = 'transport';
 
     protected bool $isFullPage = false;
     protected ?int $ttl = null;
 
-    public function isFullPage(): bool
+    public function getBlock(): ?DataObject
     {
-        return $this->isFullPage;
+        return $this->getData(self::KEY_BLOCK);
     }
 
-    abstract public function getTss(): string;
+    public function setBlock(DataObject $block): DataProviderInterface
+    {
+        return $this->setData(self::KEY_BLOCK, $block);
+    }
 
     public function getTransport(): ?DataObject
     {
         return $this->getData(self::KEY_TRANSPORT);
     }
 
-    public function setTransport(DataObject $block): DataProviderInterface
+    public function setTransport(DataObject $transport): DataProviderInterface
     {
-        return $this->setData(self::KEY_TRANSPORT, $block);
+        return $this->setData(self::KEY_TRANSPORT, $transport);
     }
+
+    abstract public function getTss(): string;
 
     public function getTtl(): ?int
     {
         return $this->ttl;
+    }
+
+    public function isFullPage(): bool
+    {
+        return $this->isFullPage;
     }
 
     public function toArray(array $keys = [])

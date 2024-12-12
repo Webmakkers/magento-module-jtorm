@@ -1,0 +1,12 @@
+# macOS filesystem
+.DS_Store
+
+# Editors and IDEs
+.idea/
+.vscode/
+
+# Generated files
+node_modules/
+
+# Test
+test/
