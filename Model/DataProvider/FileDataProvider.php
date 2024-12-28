@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Webmakkers\Jtorm\Model\DataProvider;
 
-class FileDataProvider extends \Webmakkers\Jtorm\Model\AbstractDataProvider
+class FileDataProvider extends AbstractDataProvider
 {
     public function __construct(
         private readonly \Magento\Framework\Filesystem\File\ReadFactory $readFactory,

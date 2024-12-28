@@ -27,9 +27,9 @@ readonly class SendToUIEngineAction implements \Webmakkers\Jtorm\Api\SendToUIEng
 
         $data = $this->json->serialize([
             'return_body' => !$dataProvider->isFullPage(),
+            'tss' => $dataProvider->getTss(),
             'data' => $dataProvider->toArray(),
-            'html' => $dataProvider->getTransport()->getHtml(),
-            'tss' => $dataProvider->getTss()
+            'html' => $dataProvider->getTransport()->getHtml()
         ]);
 
         $url = $this->getUIEngineUrl() . '/api/compile/' . \preg_replace('/_/', '-', $this->localeResolver->getLocale());

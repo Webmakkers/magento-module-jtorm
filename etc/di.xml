@@ -3,9 +3,17 @@
 /*! (c) jTorm and other contributors | www.jtorm.com/license */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Webmakkers\Jtorm\Api\ConfigInterface" type="Webmakkers\Jtorm\Model\Config"/>
-    <preference for="Webmakkers\Jtorm\Api\ConfigPoolInterface" type="Webmakkers\Jtorm\Model\ConfigPool"/>
+    <preference for="Webmakkers\Jtorm\Api\ConfigInterface" type="Webmakkers\Jtorm\Model\Config\Config"/>
+    <preference for="Webmakkers\Jtorm\Api\ConfigPoolInterface" type="Webmakkers\Jtorm\Model\Config\ConfigPool"/>
     <preference for="Webmakkers\Jtorm\Api\SendToUIEngineActionInterface" type="Webmakkers\Jtorm\Model\Services\Actions\SendToUIEngineAction"/>
+
+    <type name="Webmakkers\Jtorm\Model\Cache\CacheKeyResolver">
+        <arguments>
+            <argument name="cacheKeyResolver" xsi:type="array">
+                <item name="product" xsi:type="object">Webmakkers\Jtorm\Model\Cache\ProductKeyResolver</item>
+            </argument>
+        </arguments>
+    </type>
 
     <!-- Mode dev -->
     <type name="Magento\Framework\App\View\Asset\MaterializationStrategy\Symlink">

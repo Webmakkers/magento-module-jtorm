@@ -7,9 +7,9 @@ namespace Webmakkers\Jtorm\Api;
 
 interface ConfigInterface
 {
-    public function hasConfig(string $id): bool;
+    public function hasConfig(string $nameInLayout): bool;
 
-    public function getDataProvider(string $id): ?DataProviderInterface;
+    public function getDataProvider(string $nameInLayout): ?DataProviderInterface;
 
-    public function hasScope($scope): bool;
+    public function hasScope(int $storeId): bool;
 }

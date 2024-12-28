@@ -3,15 +3,16 @@
 
 declare(strict_types=1);
 
-namespace Webmakkers\Jtorm\Model;
+namespace Webmakkers\Jtorm\Model\Config;
 
 use Exception;
-use Magento\Framework\DataObject;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\DataObject;
 use Psr\Log\LoggerInterface;
 use Webmakkers\Jtorm\Api\ConfigInterface;
 use Webmakkers\Jtorm\Api\ConfigPoolInterface;
 use Webmakkers\Jtorm\Api\SendToUIEngineActionInterface;
+use Webmakkers\Jtorm\Model\Cache\CacheKeyResolver;
 use Webmakkers\Jtorm\Model\Cache\Type\JtormUiEngineCache;
 
 class ConfigPool implements ConfigPoolInterface
@@ -22,11 +23,13 @@ class ConfigPool implements ConfigPoolInterface
     private array $config;
 
     public function __construct(
+        private readonly CacheKeyResolver              $cacheKeyResolver,
         private readonly JtormUiEngineCache            $cache,
         private readonly LoggerInterface               $logger,
         private readonly SendToUIEngineActionInterface $sendUIEngineAction,
         private readonly ScopeConfigInterface          $scopeConfig,
-        private $key = '',
+        private readonly ?string                       $cacheKey = null,
+        private readonly ?string                       $cacheKeyScope = null,
         array                                          $config = []
     ) {
         $this->config = $config;
@@ -45,9 +48,14 @@ class ConfigPool implements ConfigPoolInterface
         return $this->config;
     }
 
-    public function process($scope, string $id, DataObject $transport, ?DataObject $block = null): DataObject
+    public function process(
+        int $storeId,
+        string $nameInLayout,
+        DataObject $transport,
+        ?DataObject $block = null
+    ): DataObject
     {
-        $html = $this->loadCache($scope, $id);
+        $html = $this->loadCache($storeId, $nameInLayout);
         if ($html) {
             $transport->setHtml($html);
             return $transport;
@@ -56,17 +64,17 @@ class ConfigPool implements ConfigPoolInterface
         $setCache = false;
 
         foreach ($this->config as $config) {
-            if (!$config->hasScope($scope)) {
+            if (!$config->hasScope($storeId)) {
                 continue;
             }
 
-            if (!$config->hasConfig($id)) {
+            if (!$config->hasConfig($nameInLayout)) {
                 continue;
             }
 
             try {
                 $dataProvider = $config
-                    ->getDataProvider($id)
+                    ->getDataProvider($nameInLayout)
                     ->setTransport($transport)
                 ;
 
@@ -86,7 +94,7 @@ class ConfigPool implements ConfigPoolInterface
         if ($setCache) {
             $this->cache->save(
                 $transport->getHtml(),
-                $this->parseKey($scope, $id),
+                $this->parseKey($storeId, $nameInLayout, $block),
                 [JtormUiEngineCache::CACHE_TAG],
                 $dataProvider->getTtl() ?? $this->scopeConfig->getValue(self::XML_PATH_TTL)
             );
@@ -95,11 +103,11 @@ class ConfigPool implements ConfigPoolInterface
         return $transport;
     }
 
-    private function loadCache($scope, string $id): ?string
+    private function loadCache(int $storeId, string $nameInLayout, ?DataObject $block = null): ?string
     {
         foreach ($this->config as $config) {
-            if ($config->hasScope($scope) && $config->hasConfig($id)) {
-                $cache = $this->cache->load($this->parseKey($scope, $id));
+            if ($config->hasScope($storeId) && $config->hasConfig($nameInLayout)) {
+                $cache = $this->cache->load($this->parseKey($storeId, $nameInLayout, $block));
                 if ($cache) {
                     return $cache;
                 }
@@ -109,13 +117,14 @@ class ConfigPool implements ConfigPoolInterface
         return null;
     }
 
-    private function parseKey($scope, string $id): string
+    private function parseKey(int $storeId, string $nameInLayout, ?DataObject $block = null): string
     {
-        return
-            JtormUiEngineCache::TYPE_IDENTIFIER
-            . '_' . \preg_replace('#[_\/]#', '_', \strtolower($scope))
-            . '_' . \preg_replace('#[_\/]#', '_', \strtolower($id))
-            . ($this->key ? '_' . \preg_replace('#[_\/]#', '_', \strtolower($this->key)) : '')
-        ;
+        return $this->cacheKeyResolver->execute(
+            $storeId,
+            $nameInLayout,
+            $block,
+            $this->cacheKey,
+            $this->cacheKeyScope
+        );
     }
 }

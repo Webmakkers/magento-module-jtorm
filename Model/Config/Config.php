@@ -3,13 +3,11 @@
 
 declare(strict_types=1);
 
-namespace Webmakkers\Jtorm\Model;
+namespace Webmakkers\Jtorm\Model\Config;
 
+use Magento\Framework\ObjectManagerInterface;
 use Webmakkers\Jtorm\Api\ConfigInterface;
 use Webmakkers\Jtorm\Api\DataProviderInterface;
-use Magento\Framework\ObjectManagerInterface;
-
-use function in_array;
 
 class Config implements ConfigInterface
 {
@@ -19,26 +17,26 @@ class Config implements ConfigInterface
         private ?array $scope = null
     ) {}
 
-    public function hasConfig(string $id): bool
+    public function hasConfig(string $nameInLayout): bool
     {
-        return isset($this->layoutConfig[$id]);
+        return isset($this->layoutConfig[$nameInLayout]);
     }
 
-    public function getDataProvider(string $id): ?DataProviderInterface
+    public function getDataProvider(string $nameInLayout): ?DataProviderInterface
     {
-        if (!$this->hasConfig($id)) {
+        if (!$this->hasConfig($nameInLayout)) {
             return null;
         }
 
-        return $this->objectmanager->create($this->layoutConfig[$id]);
+        return $this->objectmanager->create($this->layoutConfig[$nameInLayout]);
     }
 
-    public function hasScope($scope): bool
+    public function hasScope(int $storeId): bool
     {
         if ($this->scope === null) {
             return true;
         }
 
-        return in_array($scope, $this->scope);
+        return \in_array($storeId, $this->scope);
     }
 }

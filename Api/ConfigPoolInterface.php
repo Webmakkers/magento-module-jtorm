@@ -16,5 +16,5 @@ interface ConfigPoolInterface
      */
     public function getConfig(): array;
 
-    public function process($scope, string $id, DataObject $transport): DataObject;
+    public function process(int $storeId, string $nameInLayout, DataObject $transport): DataObject;
 }

@@ -3,7 +3,7 @@
 
 declare(strict_types=1);
 
-namespace Webmakkers\Jtorm\Model;
+namespace Webmakkers\Jtorm\Model\DataProvider;
 
 use Magento\Framework\DataObject;
 use Webmakkers\Jtorm\Api\DataProviderInterface;

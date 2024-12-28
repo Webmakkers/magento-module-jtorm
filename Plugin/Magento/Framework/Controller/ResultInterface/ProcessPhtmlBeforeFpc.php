@@ -35,7 +35,7 @@ readonly class ProcessPhtmlBeforeFpc
 
         $transport = $this->dataObjectFactory->create();
         $transport->setHtml($response->getBody());
-        $this->configPool->process($this->storeManager->getStore()->getId(), $path, $transport);
+        $this->configPool->process((int) $this->storeManager->getStore()->getId(), $path, $transport);
 
         $response->setBody($transport->getHtml());
 

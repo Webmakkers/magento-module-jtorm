@@ -24,17 +24,12 @@ readonly class Compile implements ObserverInterface
         /** @var DataObject $transport */
         $transport = $observer->getEvent()->getData('transport');
 
-        $html = $transport->getData('html');
-        if (empty($html)) {
-            return;
-        }
-
         /** @var AbstractBlock $block */
         $block = $observer->getEvent()->getData('block');
         if (empty($block->getNameInLayout())) {
             return;
         }
 
-        $this->configPool->process($this->storeManager->getStore()->getId(), $block->getNameInLayout(), $transport, $block);
+        $this->configPool->process((int) $this->storeManager->getStore()->getId(), $block->getNameInLayout(), $transport, $block);
     }
 }
