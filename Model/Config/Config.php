@@ -31,7 +31,7 @@ class Config implements ConfigInterface
         return $this->objectmanager->create($this->layoutConfig[$nameInLayout]);
     }
 
-    public function hasScope(int $storeId): bool
+    public function hasScope($storeId): bool
     {
         if ($this->scope === null) {
             return true;

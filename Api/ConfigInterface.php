@@ -11,5 +11,11 @@ interface ConfigInterface
 
     public function getDataProvider(string $nameInLayout): ?DataProviderInterface;
 
-    public function hasScope(int $storeId): bool;
+    /**
+     * Store ID or path from static generation e.g. Magento/luma/en_US/
+     *
+     * @param int|string $storeId
+     * @return bool
+     */
+    public function hasScope($storeId): bool;
 }

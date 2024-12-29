@@ -29,6 +29,11 @@ class ConfigPool implements ConfigPoolInterface
         private readonly SendToUIEngineActionInterface $sendUIEngineAction,
         private readonly ScopeConfigInterface          $scopeConfig,
         private readonly ?string                       $cacheKey = null,
+        /**
+         * cache key scope adds a unique value to the cache key
+         * this is needed for example in a product list/grid where the block layout name is the same
+         * to achieve a cache per product by adding a sku to the cache key
+         */
         private readonly ?string                       $cacheKeyScope = null,
         array                                          $config = []
     ) {
@@ -49,7 +54,7 @@ class ConfigPool implements ConfigPoolInterface
     }
 
     public function process(
-        int $storeId,
+        $storeId,
         string $nameInLayout,
         DataObject $transport,
         ?DataObject $block = null
@@ -103,7 +108,7 @@ class ConfigPool implements ConfigPoolInterface
         return $transport;
     }
 
-    private function loadCache(int $storeId, string $nameInLayout, ?DataObject $block = null): ?string
+    private function loadCache($storeId, string $nameInLayout, ?DataObject $block = null): ?string
     {
         foreach ($this->config as $config) {
             if ($config->hasScope($storeId) && $config->hasConfig($nameInLayout)) {
@@ -117,7 +122,7 @@ class ConfigPool implements ConfigPoolInterface
         return null;
     }
 
-    private function parseKey(int $storeId, string $nameInLayout, ?DataObject $block = null): string
+    private function parseKey($storeId, string $nameInLayout, ?DataObject $block = null): string
     {
         return $this->cacheKeyResolver->execute(
             $storeId,

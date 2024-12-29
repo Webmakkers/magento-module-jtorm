@@ -22,7 +22,7 @@ class CacheKeyResolver
     }
 
     public function execute(
-        int $storeId,
+        $storeId,
         string $nameInLayout,
         ?DataObject $block,
         ?string $cacheKey,
@@ -40,7 +40,7 @@ class CacheKeyResolver
         return
             JtormUiEngineCache::TYPE_IDENTIFIER
             . '_' . $storeId
-            . '_' . \preg_replace('#[_\/]#', '_', $nameInLayout)
+            . '_' . $nameInLayout
             . ($cacheKey ? '_' . $cacheKey : '')
             . ($cacheKey2 ? '_' . $cacheKey2 : '')
         ;
