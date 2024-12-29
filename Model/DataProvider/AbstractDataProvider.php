@@ -51,6 +51,11 @@ abstract class AbstractDataProvider extends DataObject implements DataProviderIn
     public function toArray(array $keys = [])
     {
         $result = parent::toArray($keys);
+
+        if (isset($result[self::KEY_BLOCK]))
+            unset($result[self::KEY_BLOCK])
+        ;
+
         unset($result[self::KEY_TRANSPORT]);
         return $result;
     }
