@@ -60,7 +60,7 @@ class ConfigPool implements ConfigPoolInterface
         ?DataObject $block = null
     ): DataObject
     {
-        $html = $this->loadCache($storeId, $nameInLayout);
+        $html = $this->loadCache($storeId, $nameInLayout, $block);
         if ($html) {
             $transport->setHtml($html);
             return $transport;
