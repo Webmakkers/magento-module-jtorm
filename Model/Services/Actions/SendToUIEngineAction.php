@@ -15,11 +15,14 @@ readonly class SendToUIEngineAction implements \Webmakkers\Jtorm\Api\SendToUIEng
         private \Magento\Framework\Serialize\Serializer\Json $json,
         private \Psr\Log\LoggerInterface $logger,
         private \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        private \Magento\Framework\Locale\Resolver $localeResolver
-    ) {}
+        private \Magento\Framework\Locale\Resolver $localeResolver,
+        private int $timeout = 3
+    ) {
+    }
 
     public function execute(\Webmakkers\Jtorm\Api\DataProviderInterface $dataProvider): string
     {
+        $this->curl->setTimeout($this->timeout);
         $this->curl->addHeader('Accept', 'text/html');
         $this->curl->addHeader("Content-Type", "application/json");
         $this->curl->addHeader(\CURLOPT_ENCODING, 'gzip, deflate');
@@ -36,6 +39,8 @@ readonly class SendToUIEngineAction implements \Webmakkers\Jtorm\Api\SendToUIEng
         $this->curl->post($url, $data);
 
         $this->handleResponse($url, $dataProvider);
+
+        $this->curl->setTimeout(300);// default it to 300 again
 
         return $this->curl->getBody();
     }
