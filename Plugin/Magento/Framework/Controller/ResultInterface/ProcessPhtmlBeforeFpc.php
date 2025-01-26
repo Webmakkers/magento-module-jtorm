@@ -29,7 +29,7 @@ readonly class ProcessPhtmlBeforeFpc
         $path = $this->request->getModuleName() .'/'. $this->request->getControllerName() .'/'. $this->request->getActionName();
         if (!empty($this->request->getParams())) {
             foreach ($this->request->getParams() as $key => $value) {
-                $path .= '/' . $key . '/' . $value;
+                $path .= '/' . $key . '/' . (\is_array($value) ? \implode('_', $value) : $value);
             }
         }
 
