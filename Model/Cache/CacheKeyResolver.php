@@ -28,13 +28,24 @@ class CacheKeyResolver
         ?string $cacheKey,
         ?string $cacheKeyScope
     ) {
-        $cacheKey2 = null;
-        if ($cacheKeyScope && $block) {
-            if (!isset($this->cacheKeyResolver[$cacheKeyScope])) {
-                throw new InvalidArgumentException(\sprintf('Cache key resolver %s not found.', $cacheKeyScope));
+        $cacheKey2 = '';
+
+        if ($block) {
+            if ($block->getCacheKey()) {
+                $cacheKey2 .= $block->getCacheKey();
             }
 
-            $cacheKey2 = $this->cacheKeyResolver[$cacheKeyScope]->execute($block);
+            if ($cacheKeyScope) {
+                if (!isset($this->cacheKeyResolver[$cacheKeyScope])) {
+                    throw new InvalidArgumentException(\sprintf('Cache key resolver %s not found.', $cacheKeyScope));
+                }
+
+                if ($cacheKey2) {
+                    $cacheKey2 .= '_';
+                }
+
+                $cacheKey2 .= $this->cacheKeyResolver[$cacheKeyScope]->execute($block);
+            }
         }
 
         return
@@ -43,6 +54,6 @@ class CacheKeyResolver
             . '_' . $nameInLayout
             . ($cacheKey ? '_' . $cacheKey : '')
             . ($cacheKey2 ? '_' . $cacheKey2 : '')
-        ;
+            ;
     }
 }

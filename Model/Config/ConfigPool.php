@@ -8,6 +8,7 @@ namespace Webmakkers\Jtorm\Model\Config;
 use Exception;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject;
+use Magento\Framework\DataObject\IdentityInterface;
 use Psr\Log\LoggerInterface;
 use Webmakkers\Jtorm\Api\ConfigInterface;
 use Webmakkers\Jtorm\Api\ConfigPoolInterface;
@@ -102,15 +103,35 @@ class ConfigPool implements ConfigPoolInterface
         }
 
         if ($setCache) {
+            $keys = [JtormUiEngineCache::CACHE_TAG];
+            if ($block) {
+                $keys = \array_merge($keys, $this->getCacheTags($block));
+            }
+
             $this->cache->save(
                 $transport->getHtml(),
                 $this->parseKey($storeId, $nameInLayout, $block),
-                [JtormUiEngineCache::CACHE_TAG],
+                $keys,
                 $dataProvider->getTtl() ?? $this->scopeConfig->getValue(self::XML_PATH_TTL)
             );
         }
 
         return $transport;
+    }
+
+    private function getCacheTags(DataObject $block)
+    {
+        if (!$block->hasData('cache_tags')) {
+            $tags = [];
+        } else {
+            $tags = $block->getData('cache_tags');
+        }
+        $tags[] = $block::CACHE_GROUP;
+
+        if ($this instanceof IdentityInterface) {
+            $tags = array_merge($tags, $block->getIdentities());
+        }
+        return $tags;
     }
 
     private function loadCache($storeId, string $nameInLayout, ?DataObject $block = null): ?string
